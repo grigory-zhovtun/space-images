@@ -25,7 +25,8 @@ def main():
 
     channel_id = "@space_images_learning_bot"
 
-    bot.send_message(chat_id=channel_id, text="Привет! Это тестовое сообщение в канал.")
+    bot.send_document(chat_id=channel_id, document=open('images/spacex/16763151866_35a0a4d8e1_o.jpg', 'rb'))
+    # bot.send_message(chat_id=channel_id, text="Привет! Это тестовое сообщение в канал.")
 
 if __name__ == "__main__":
     main()
