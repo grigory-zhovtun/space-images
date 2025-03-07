@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from urllib.parse import urlparse
 import requests
+from random import shuffle
+import os
 
 def get_filename_from_url(image_url):
     """Return file name with extension
@@ -48,3 +50,21 @@ def download_image(image_url, path_to_save):
     filepath = Path(path_to_save) / filename
     with open(filepath, 'wb') as file:
         file.write(response.content)
+
+
+def get_shuffled_image_paths():
+    """
+    Recursively traverses the 'images' directory and returns a list of image file paths
+    shuffled in random order.
+
+    Returns:
+        list[str]: A list of full paths to images.
+    """
+    images_directory = Path('images')
+
+    files_list = []
+    for root, _, files in os.walk(images_directory):
+        for file in files:
+            files_list.append(os.path.join(root, file))
+    shuffle(files_list)
+    return files_list

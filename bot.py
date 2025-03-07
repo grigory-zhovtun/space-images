@@ -2,6 +2,9 @@ from telegram import Update, Bot
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 from dotenv import load_dotenv
 import os
+import argparse
+from time import sleep
+from utils import get_shuffled_image_paths
 
 
 def start_command(update: Update, context: CallbackContext):
@@ -18,15 +21,43 @@ def echo_message(update: Update, context: CallbackContext):
 
 
 def main():
-    load_dotenv()
-    TOKEN = os.environ.get('TELEGRAM_API_KEY')
+    """
+        Main entry point for publishing space photos to a Telegram channel.
 
-    bot = Bot(TOKEN)
+        This function loads environment variables and retrieves the Telegram API key.
+        It parses a command-line argument specifying the delay between image publications,
+        with a default value of 4.0 hours. The function then enters an infinite loop where it:
+
+        1. Retrieves a shuffled list of image file paths from the 'images' directory.
+        2. Sends each image (as a document) to a designated Telegram channel.
+        3. Waits for the specified delay (converted from hours to seconds) before sending the next image.
+
+        Environment Variables:
+            TELEGRAM_API_KEY (str): API key for the Telegram bot.
+
+        Command-line Arguments:
+            hours (float): Delay in hours between sending images. Defaults to 4.0 if not provided.
+    """
+    load_dotenv()
+    api_key = os.environ.get('TELEGRAM_API_KEY')
+    default_delay_hours = 4.0
+
+    parser = argparse.ArgumentParser(
+        description="Publish space photos to Telegram Channel"
+    )
+    parser.add_argument('hours', type=float, default=default_delay_hours)
+    delay = parser.parse_args()
+
+    bot = Bot(api_key)
 
     channel_id = "@space_images_learning_bot"
 
-    bot.send_document(chat_id=channel_id, document=open('images/spacex/16763151866_35a0a4d8e1_o.jpg', 'rb'))
-    # bot.send_message(chat_id=channel_id, text="Привет! Это тестовое сообщение в канал.")
+    while True:
+        image_paths = get_shuffled_image_paths()
+
+        for image_path in image_paths:
+            bot.send_document(chat_id=channel_id, document=open(image_path, 'rb'))
+            sleep(delay.hours * 3600)
 
 if __name__ == "__main__":
     main()
