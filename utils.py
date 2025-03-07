@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 import requests
 from random import shuffle
-import os
+
 
 def get_filename_from_url(image_url):
     """Return file name with extension
