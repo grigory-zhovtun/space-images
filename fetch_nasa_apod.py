@@ -1,20 +1,24 @@
+"""Module for downloading NASA Astronomy Picture of the Day images."""
 import argparse
 import os
 import requests
-from pathlib import Path
 from dotenv import load_dotenv
 from utils import download_image
 
 
 def fetch_nasa_apod(count=30, date=None):
+    """Fetch and download NASA APOD images.
+
+    Args:
+        count (int): Number of images to fetch when date is not specified.
+        date (str): Specific date (YYYY-MM-DD) to fetch APOD for.
+    """
     load_dotenv()
-    api_key = os.environ.get('NASA_API_KEY')
+    api_key = os.environ.get("NASA_API_KEY")
     if not api_key:
         raise ValueError("NASA_API_KEY not found in environment variables.")
-    apod_url = 'https://api.nasa.gov/planetary/apod'
-    payload = {
-        "api_key": api_key,
-    }
+    apod_url = "https://api.nasa.gov/planetary/apod"
+    payload = {"api_key": api_key}
     if date:
         payload["date"] = date
     else:
@@ -23,7 +27,7 @@ def fetch_nasa_apod(count=30, date=None):
     response = requests.get(apod_url, params=payload)
     response.raise_for_status()
     data = response.json()
-    images_path = 'images/nasa_apod'
+    images_path = "images/nasa_apod"
 
     if isinstance(data, list):
         for item in data:
@@ -41,9 +45,21 @@ def fetch_nasa_apod(count=30, date=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Download NASA Astronomy Picture of the Day images.")
-    parser.add_argument("--count", type=int, default=30, help="Number of images to fetch (default: 30)")
-    parser.add_argument("--date", type=str, help="Fetch APOD for a specific date (YYYY-MM-DD)")
+    """Parse command-line arguments and download NASA APOD images."""
+    parser = argparse.ArgumentParser(
+        description="Download NASA Astronomy Picture of the Day images."
+    )
+    parser.add_argument(
+        "--count",
+        type=int,
+        default=30,
+        help="Number of images to fetch (default: 30)"
+    )
+    parser.add_argument(
+        "--date",
+        type=str,
+        help="Fetch APOD for a specific date (YYYY-MM-DD)"
+    )
     args = parser.parse_args()
     try:
         fetch_nasa_apod(count=args.count, date=args.date)
@@ -52,5 +68,5 @@ def main():
         exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
