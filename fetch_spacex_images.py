@@ -5,23 +5,26 @@ import sys
 from utils import download_image
 
 
-def fetch_spacex_images(launch_id=None):
+def fetch_spacex_data(launch_id):
     """Fetch and download SpaceX launch images.
 
     Args:
         launch_id (str): ID of the SpaceX launch.
-                         If not provided, fetches the latest launch.
     """
-    images_path = "images/spacex"
-    if launch_id:
-        url = (
-            f"https://api.spacexdata.com/v5/launches/{launch_id}"
-        )
-    else:
-        url = "https://api.spacexdata.com/v5/launches/latest"
+    url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
     response = requests.get(url)
     response.raise_for_status()
-    data = response.json()
+    return response.json()
+
+
+def download_spacex_image(data):
+    """Download a SpaceX image.
+
+    Args:
+        data (dict): JSON data returned from the API.
+        images_path (str): Path to the images folder.
+    """
+    images_path = "images/spacex"
     images = data.get("links", {}).get("flickr", {}).get("original", [])
     if not images:
         print("No images found for this launch.")
@@ -37,12 +40,14 @@ def main():
     parser.add_argument(
         "--id",
         type=str,
-        help="ID of the SpaceX launch (if omitted, downloads latest launch img)",
+        default="latest",
+        help="ID of the SpaceX launch (default: latest launch img)",
     )
     args = parser.parse_args()
     try:
-        fetch_spacex_images(args.id)
-    except Exception as e:
+        json_spacex_data = fetch_spacex_data(args.id)
+        download_spacex_image(json_spacex_data)
+    except (ValueError, requests.exceptions.RequestException) as e:
         print(f"Error: {e}")
         sys.exit(1)
 

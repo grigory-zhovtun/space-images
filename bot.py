@@ -5,6 +5,8 @@ using a Telegram bot.
 """
 
 from telegram import Bot
+from telegram.error import NetworkError
+import requests
 from dotenv import load_dotenv
 import os
 import sys
@@ -36,8 +38,7 @@ def main():
     Raises:
         SystemExit: If the image specified by '--image' does not exist.
     """
-    load_dotenv()
-    api_key = os.environ.get("TELEGRAM_API_KEY")
+    api_key = os.environ['TELEGRAM_API_KEY']
     default_delay_hours = 4.0
 
     parser = argparse.ArgumentParser(
@@ -51,29 +52,55 @@ def main():
             "Path to image. If it is empty, will publish random image."
         ),
     )
+    parser.add_argument(
+        "--chat_id",
+        type=str,
+        help="Telegram chat ID for publishing messages"
+    )
 
     args = parser.parse_args()
 
     bot = Bot(api_key)
 
-    channel_id = "@space_images_learning_bot"
+    if args.chat_id:
+        channel_id = args.chat_id
+    else:
+        channel_id = "@space_images_learning_bot"
+
+
+    def send_image(image_path, channel_id):
+        with open(image_path, "rb") as doc:
+            bot.send_document(chat_id=channel_id, document=doc)
+
 
     if args.image:
         if not os.path.exists(args.image):
             print(f"Image {args.image} not found.")
             sys.exit(1)
-        with open(args.image, "rb") as doc:
-            bot.send_document(chat_id=channel_id, document=doc)
+        send_image(args.image, channel_id)
         print("Image published.")
         return
 
     while True:
-        image_paths = get_shuffled_image_paths()
-        for image_path in image_paths:
-            with open(image_path, "rb") as doc:
-                bot.send_document(chat_id=channel_id, document=doc)
-            sleep(args.hours * 3600)
+        try:
+            image_paths = get_shuffled_image_paths()
+            for image_path in image_paths:
+                try:
+                    send_image(image_path, channel_id)
+                    print(f"Published image: {image_path}")
+                except (NetworkError, requests.exceptions.ConnectionError) as e:
+                    print(f"Network error encountered while sending {image_path}: {e}. Retrying in 1 second...")
+                    sleep(1)
+                    # Можно здесь добавить логику повторной попытки для того же изображения,
+                    # либо просто пропустить его и перейти к следующему.
+                    continue
+                sleep(args.hours * 3600)
+        except (NetworkError, requests.exceptions.ConnectionError) as e:
+            print(f"Network error encountered: {e}. Retrying in 1 second...")
+            sleep(1)
+            continue
 
 
 if __name__ == "__main__":
+    load_dotenv()
     main()
