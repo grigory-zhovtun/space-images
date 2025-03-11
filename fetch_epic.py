@@ -45,6 +45,7 @@ def download_epic(data):
 
 def main():
     """Download NASA EPIC images."""
+    load_dotenv()
     parser = argparse.ArgumentParser(description="Download NASA EPIC images.")
     parser.parse_args()  # No arguments needed
     try:
@@ -56,5 +57,4 @@ def main():
 
 
 if __name__ == "__main__":
-    load_dotenv()
     main()

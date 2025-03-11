@@ -38,6 +38,7 @@ def main():
     Raises:
         SystemExit: If the image specified by '--image' does not exist.
     """
+    load_dotenv()
     api_key = os.environ['TELEGRAM_API_KEY']
     default_delay_hours = 4.0
 
@@ -102,5 +103,4 @@ def main():
 
 
 if __name__ == "__main__":
-    load_dotenv()
     main()

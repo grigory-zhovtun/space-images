@@ -56,6 +56,7 @@ def download_apod_images(data, images_path="images/nasa_apod"):
 
 def main():
     """Parse command-line arguments and download NASA APOD images."""
+    load_dotenv()
     parser = argparse.ArgumentParser(
         description="Download NASA Astronomy Picture of the Day images."
     )
@@ -86,5 +87,4 @@ def main():
 
 
 if __name__ == "__main__":
-    load_dotenv()
     main()
