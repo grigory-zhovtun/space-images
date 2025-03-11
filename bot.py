@@ -69,7 +69,7 @@ def main():
         channel_id = "@space_images_learning_bot"
 
 
-    def send_image(image_path, channel_id):
+    def send_image(image_path, channel_id, bot):
         with open(image_path, "rb") as doc:
             bot.send_document(chat_id=channel_id, document=doc)
 
@@ -78,7 +78,7 @@ def main():
         if not os.path.exists(args.image):
             print(f"Image {args.image} not found.")
             sys.exit(1)
-        send_image(args.image, channel_id)
+        send_image(args.image, channel_id, bot)
         print("Image published.")
         return
 
@@ -87,7 +87,7 @@ def main():
             image_paths = get_shuffled_image_paths()
             for image_path in image_paths:
                 try:
-                    send_image(image_path, channel_id)
+                    send_image(image_path, channel_id, bot)
                     print(f"Published image: {image_path}")
                 except (NetworkError, requests.exceptions.ConnectionError) as e:
                     print(f"Network error encountered while sending {image_path}: {e}. Retrying in 1 second...")
