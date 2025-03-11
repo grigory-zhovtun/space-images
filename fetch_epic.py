@@ -38,7 +38,6 @@ def download_epic(data: list, images_path):
             f"{year}/{month}/{day}/jpg/{image_name}.jpg"
         )
         download_image(image_url, images_path)
-    print("Done!")
 
 
 def main():

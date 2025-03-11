@@ -1,7 +1,7 @@
 """Module for downloading SpaceX launch images."""
 import argparse
 import requests
-import sys
+import logging
 import os
 from utils import download_image
 
@@ -27,7 +27,7 @@ def download_spacex_image(data, images_path):
     """
     images = data.get("links", {}).get("flickr", {}).get("original", [])
     if not images:
-        print("No images found for this launch.")
+        logging.warning("No images found for this launch.")
         return
     for image in images:
         download_image(image, images_path)

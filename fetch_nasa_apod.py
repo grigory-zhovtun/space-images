@@ -4,6 +4,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from utils import download_image
+import logging
 
 
 def fetch_nasa_apod_data(key, count=30, date=None):
@@ -47,7 +48,7 @@ def process_apod_item(item, images_path):
         image_url = item.get("url")
         download_image(image_url, images_path)
     else:
-        print("Skipping non-image media type.")
+        logging.error("Skipping non-image media type.")
 
 
 def download_apod_images(data, images_path="images/nasa_apod"):
@@ -63,7 +64,6 @@ def download_apod_images(data, images_path="images/nasa_apod"):
             process_apod_item(item, images_path)
     else:
         process_apod_item(data, images_path)
-    print("Done!")
 
 
 def main():

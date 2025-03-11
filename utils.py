@@ -24,7 +24,6 @@ def download_image(image_url, path_to_save):
         path_to_save (str): Path where the image will be saved.
     """
     Path(path_to_save).mkdir(parents=True, exist_ok=True)
-    print("Downloading image:", image_url)
     response = requests.get(image_url)
     response.raise_for_status()
     filename = get_filename_from_url(image_url)

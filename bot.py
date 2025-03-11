@@ -3,13 +3,13 @@
 Module for publishing space photos to a Telegram channel
 using a Telegram bot.
 """
-
 from telegram import Bot
 from telegram.error import NetworkError
 import requests
 from dotenv import load_dotenv
 import os
 import sys
+import logging
 import argparse
 from time import sleep
 from utils import get_shuffled_image_paths
@@ -76,10 +76,10 @@ def main():
 
     if args.image:
         if not os.path.exists(args.image):
-            print(f"Image {args.image} not found.")
+            logging.error(f"Image {args.image} not found.")
             sys.exit(1)
         send_image(args.image, channel_id, bot)
-        print("Image published.")
+        logging.info("Image published.")
         return
 
     while True:
@@ -91,14 +91,14 @@ def main():
             for image_path in image_paths:
                 try:
                     send_image(image_path, channel_id, bot)
-                    print(f"Published image: {image_path}")
+                    logging.info(f"Published image: {image_path}")
                 except (NetworkError, requests.exceptions.ConnectionError) as e:
-                    print(f"Network error encountered while sending {image_path}: {e}. Retrying in 1 second...")
+                    logging.error(f"Network error encountered while sending {image_path}: {e}. Retrying in 1 second...")
                     sleep(1)
                     continue
                 sleep(args.hours * 3600)
         except (NetworkError, requests.exceptions.ConnectionError) as e:
-            print(f"Network error encountered: {e}. Retrying in 1 second...")
+            logging.error(f"Network error encountered: {e}. Retrying in 1 second...")
             sleep(1)
             continue
 
