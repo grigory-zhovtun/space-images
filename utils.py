@@ -7,30 +7,10 @@ from random import shuffle
 
 
 def get_filename_from_url(image_url):
-    """Return file name with extension.
-
-    Args:
-        image_url (str): Image URL.
-
-    Returns:
-        str: File name.
-    """
     return os.path.basename(urlparse(image_url).path)
 
 
 def get_file_extension(image_url):
-    """Return file extension.
-
-    Examples:
-        >>> get_file_extension('https://example.com/path/to/file.jpg')
-        '.jpg'
-
-    Args:
-        image_url (str): Image URL.
-
-    Returns:
-        str: File extension.
-    """
     filename = get_filename_from_url(image_url)
     _, extension = os.path.splitext(filename)
     return extension
