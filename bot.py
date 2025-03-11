@@ -39,6 +39,7 @@ def send_image_with_retry(image_path, channel_id, bot):
             )
             sleep(1)
 
+
 def main():
     """Publish space photos to a Telegram channel."""
     load_dotenv()
