@@ -33,24 +33,36 @@ def fetch_nasa_apod_data(key, count=30, date=None):
     return response.json()
 
 
-def download_apod_images(data, images_path="images/nasa_apod"):
-    """Download images from NASA APOD.
+def process_apod_item(item, images_path):
+    """Processes a single APOD item.
+
+    If the media_type is 'image', it downloads the image.
+    Otherwise, it prints a message.
 
     Args:
-        data (dict): NASA APOD data
+        item (dict): APOD item.
+        images_path (str): Path to directory where images are stored.
+    """
+    if item.get("media_type") == "image":
+        image_url = item.get("url")
+        download_image(image_url, images_path)
+    else:
+        print("Skipping non-image media type.")
+
+
+def download_apod_images(data, images_path="images/nasa_apod"):
+    """Processes APOD data, which can be either a list of items or a single item.
+
+    Args:
+        data (dict): APOD data.
+        images_path (str): Path to directory where images are stored.
+
     """
     if isinstance(data, list):
         for item in data:
-            if item.get("media_type") == "image":
-                image_url = item.get("url")
-                download_image(image_url, images_path)
-            else:
-                print("Skipping non-image media type.")
+            process_apod_item(item, images_path)
     else:
-        if data.get("media_type") == "image":
-            download_image(data.get("url"), images_path)
-        else:
-            print("APOD is not an image.")
+        process_apod_item(data, images_path)
     print("Done!")
 
 
