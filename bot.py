@@ -66,7 +66,7 @@ def main():
     if args.chat_id:
         channel_id = args.chat_id
     else:
-        channel_id = "@space_images_learning_bot"
+        channel_id = os.environ['CHANNEL_ID']
 
 
     def send_image(image_path, channel_id, bot):
@@ -95,8 +95,6 @@ def main():
                 except (NetworkError, requests.exceptions.ConnectionError) as e:
                     print(f"Network error encountered while sending {image_path}: {e}. Retrying in 1 second...")
                     sleep(1)
-                    # Можно здесь добавить логику повторной попытки для того же изображения,
-                    # либо просто пропустить его и перейти к следующему.
                     continue
                 sleep(args.hours * 3600)
         except (NetworkError, requests.exceptions.ConnectionError) as e:
