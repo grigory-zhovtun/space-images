@@ -52,12 +52,8 @@ def main():
 
     args = parser.parse_args()
 
-    try:
-        json_spacex_data = fetch_spacex_data(args.id)
-        download_spacex_image(json_spacex_data, images_path=args.images_path)
-    except (ValueError, requests.exceptions.RequestException) as e:
-        print(f"Error: {e}")
-        sys.exit(1)
+    json_spacex_data = fetch_spacex_data(args.id)
+    download_spacex_image(json_spacex_data, images_path=args.images_path)
 
 
 if __name__ == "__main__":

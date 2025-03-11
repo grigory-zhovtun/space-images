@@ -90,12 +90,9 @@ def main():
         help="Path to save downloaded images)"
     )
     args = parser.parse_args()
-    try:
-        json_nasa_apod = fetch_nasa_apod_data(os.environ.get("NASA_API_KEY"), count=args.count, date=args.date)
-        download_apod_images(json_nasa_apod, images_path=args.images_path)
-    except (ValueError, requests.exceptions.RequestException) as e:
-        print(f"Error: {e}")
-        exit(1)
+
+    json_nasa_apod = fetch_nasa_apod_data(os.environ.get("NASA_API_KEY"), count=args.count, date=args.date)
+    download_apod_images(json_nasa_apod, images_path=args.images_path)
 
 
 if __name__ == "__main__":

@@ -58,12 +58,8 @@ def main():
     )
     args = parser.parse_args()
 
-    try:
-        json_epic_data = fetch_epic(api_key)
-        download_epic(json_epic_data, images_path=args.images_path)
-    except (requests.exceptions.RequestException, Exception) as e:
-        print(f"Error: {e}")
-        exit(1)
+    json_epic_data = fetch_epic(api_key)
+    download_epic(json_epic_data, images_path=args.images_path)
 
 
 if __name__ == "__main__":
