@@ -53,19 +53,21 @@ def download_image(image_url, path_to_save):
         file.write(response.content)
 
 
-def get_shuffled_image_paths(images_directory=None):
-    """Traverse the images directory and return shuffled image paths.
+def get_shuffled_image_paths(images_directory):
+    """Traverse the specified images directory and return a shuffled list of image paths.
 
     Args:
-        images_directory (str or Path, optional): Directory to search images in.
-            Если не задан, используется значение переменной окружения 'IMAGES_DIRECTORY',
-            либо по умолчанию 'images'.
+        images_directory (str or Path): The directory in which to search for images.
+            A valid directory must be provided.
 
     Returns:
-        list[str]: A list of full paths to images.
+        list[str]: A list containing the full paths to the images found in the directory.
+
+    Raises:
+        ValueError: If images_directory is None.
     """
     if images_directory is None:
-        images_directory = os.getenv("IMAGES_DIRECTORY", "images")
+        raise ValueError("images_directory must be provided and cannot be None.")
     images_directory = Path(images_directory)
     files_list = []
     for root, _, files in os.walk(images_directory):

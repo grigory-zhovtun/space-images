@@ -84,7 +84,10 @@ def main():
 
     while True:
         try:
-            image_paths = get_shuffled_image_paths()
+            images_directory = os.getenv("IMAGES_DIRECTORY", "images")
+            if images_directory is None:
+                raise ValueError("IMAGES_DIRECTORY environment variable must be set.")
+            image_paths = get_shuffled_image_paths(images_directory)
             for image_path in image_paths:
                 try:
                     send_image(image_path, channel_id, bot)

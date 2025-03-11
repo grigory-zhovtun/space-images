@@ -7,17 +7,14 @@ from utils import download_image
 from datetime import datetime
 
 
-def fetch_epic(key):
+def fetch_epic(api_key: str):
     """Fetch NASA EPIC images.
 
     Args:
-        key (str): NASA EPIC image key.
+        api_key (str): Valid NASA API key.
     Returns:
-        json: NASA EPIC json data.
+        json: NASA EPIC JSON data.
     """
-    api_key = key
-    if not api_key:
-        raise ValueError("NASA_API_KEY not found in environment variables.")
     epic_url = "https://api.nasa.gov/EPIC/api/natural"
     payload = {"api_key": api_key}
     response = requests.get(epic_url, params=payload)
@@ -25,15 +22,17 @@ def fetch_epic(key):
     return response.json()
 
 
-def download_epic(data):
-    """Download NASA EPIC images."""
-    if not isinstance(data, list):
-        print("Expected list of EPIC data, but got different format.")
-        return
+
+def download_epic(data: list):
+    """Download NASA EPIC images.
+
+    Args:
+        data (list): List of NASA EPIC data.
+    """
     images_path = "images/nasa_epic"
     for item in data:
         image_name = item["image"]
-        date_str = datetime.fromisoformat(item["date"].split()[0])  # Format: 'YYYY-MM-DD'
+        date_str = datetime.fromisoformat(item["date"].split()[0])
         year, month, day = date_str.year, date_str.month, date_str.day
         image_url = (
             f"https://epic.gsfc.nasa.gov/archive/natural/"
@@ -46,12 +45,18 @@ def download_epic(data):
 def main():
     """Download NASA EPIC images."""
     load_dotenv()
+
+    api_key = os.environ.get("NASA_API_KEY")
+    if not api_key:
+        raise ValueError("NASA_API_KEY must be provided in the environment variables.")
+
     parser = argparse.ArgumentParser(description="Download NASA EPIC images.")
-    parser.parse_args()  # No arguments needed
+    parser.parse_args()
+
     try:
-        json_epic_data = fetch_epic(os.environ.get("NASA_API_KEY"))
+        json_epic_data = fetch_epic(api_key)
         download_epic(json_epic_data)
-    except (ValueError, requests.exceptions.RequestException) as e:
+    except (requests.exceptions.RequestException, Exception) as e:
         print(f"Error: {e}")
         exit(1)
 
