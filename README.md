@@ -61,8 +61,20 @@ This Python project fetches and manages images from SpaceX, NASA APOD, and NASA 
      ```env
      TELEGRAM_API_KEY=your_telegram_bot_api_key_here
      ```
+## Environment Variables Setup
 
+The application uses the following environment variables:
+
+•	**NASA_API_KEY**: Your API key for accessing NASA’s APOD (and EPIC) endpoints.
+
+•	**NASA_APOD_IMAGES_PATH**: (Optional) Specifies the directory where NASA APOD images will be saved. Default: images/nasa_apod.
+
+•	**IMAGES_DIRECTORY**: (Optional) Specifies the directory used for storing images by the application. Default: images.
+
+Make sure to create a .env file in the project root and define these variables accordingly before running the program.
 ---
+
+
 
 ## Usage
 
