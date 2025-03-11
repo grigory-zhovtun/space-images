@@ -49,9 +49,9 @@ def get_shuffled_image_paths(images_directory):
     if images_directory is None:
         raise ValueError("images_directory must be provided and cannot be None.")
     images_directory = Path(images_directory)
-    files_list = []
+    file_full_paths = []
     for root, _, files in os.walk(images_directory):
         for file in files:
-            files_list.append(os.path.join(root, file))
-    shuffle(files_list)
-    return files_list
+            file_full_paths.append(os.path.join(root, file))
+    shuffle(file_full_paths)
+    return file_full_paths
