@@ -2,6 +2,7 @@
 import argparse
 import requests
 import sys
+import os
 from utils import download_image
 
 
@@ -17,14 +18,13 @@ def fetch_spacex_data(launch_id):
     return response.json()
 
 
-def download_spacex_image(data):
+def download_spacex_image(data, images_path):
     """Download a SpaceX image.
 
     Args:
         data (dict): JSON data returned from the API.
         images_path (str): Path to the images folder.
     """
-    images_path = "images/spacex"
     images = data.get("links", {}).get("flickr", {}).get("original", [])
     if not images:
         print("No images found for this launch.")
@@ -43,10 +43,18 @@ def main():
         default="latest",
         help="ID of the SpaceX launch (default: latest launch img)",
     )
+    parser.add_argument(
+        "--images-path",
+        type=str,
+        default=os.getenv("NASA_SPACEX_IMAGES_PATH", "images/spacex"),
+        help="Path to save downloaded images)"
+    )
+
     args = parser.parse_args()
+
     try:
         json_spacex_data = fetch_spacex_data(args.id)
-        download_spacex_image(json_spacex_data)
+        download_spacex_image(json_spacex_data, images_path=args.images_path)
     except (ValueError, requests.exceptions.RequestException) as e:
         print(f"Error: {e}")
         sys.exit(1)

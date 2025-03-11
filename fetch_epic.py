@@ -23,13 +23,12 @@ def fetch_epic(api_key: str):
 
 
 
-def download_epic(data: list):
+def download_epic(data: list, images_path):
     """Download NASA EPIC images.
 
     Args:
         data (list): List of NASA EPIC data.
     """
-    images_path = "images/nasa_epic"
     for item in data:
         image_name = item["image"]
         date_str = datetime.fromisoformat(item["date"].split()[0])
@@ -51,11 +50,17 @@ def main():
         raise ValueError("NASA_API_KEY must be provided in the environment variables.")
 
     parser = argparse.ArgumentParser(description="Download NASA EPIC images.")
-    parser.parse_args()
+    parser.add_argument(
+        "--images-path",
+        type=str,
+        default=os.getenv("NASA_EPIC_IMAGES_PATH", "images/nasa_epic"),
+        help="Path to save downloaded images)"
+    )
+    args = parser.parse_args()
 
     try:
         json_epic_data = fetch_epic(api_key)
-        download_epic(json_epic_data)
+        download_epic(json_epic_data, images_path=args.images_path)
     except (requests.exceptions.RequestException, Exception) as e:
         print(f"Error: {e}")
         exit(1)
