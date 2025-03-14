@@ -7,7 +7,7 @@ from utils import download_image
 import logging
 
 
-def fetch_nasa_apod_data(key, count=30, date=None):
+def fetch_nasa_apod_data(api_key, count=30, date=None):
     """Fetch NASA APOD images.
 
     Args:
@@ -18,7 +18,6 @@ def fetch_nasa_apod_data(key, count=30, date=None):
     Returns:
         json: json object containing NASA APOD data
     """
-    api_key = key
     if not api_key:
         raise ValueError("NASA_API_KEY not found in environment variables.")
     apod_url = "https://api.nasa.gov/planetary/apod"
