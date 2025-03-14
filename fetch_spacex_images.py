@@ -52,8 +52,8 @@ def main():
 
     args = parser.parse_args()
 
-    json_spacex_data = fetch_spacex_data(args.id)
-    download_spacex_image(json_spacex_data, images_path=args.images_path)
+    spacex_data = fetch_spacex_data(args.id)
+    download_spacex_image(spacex_data, images_path=args.images_path)
 
 
 if __name__ == "__main__":

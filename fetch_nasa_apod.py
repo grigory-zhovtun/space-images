@@ -91,8 +91,8 @@ def main():
     )
     args = parser.parse_args()
 
-    json_nasa_apod = fetch_nasa_apod_data(os.environ.get("NASA_API_KEY"), count=args.count, date=args.date)
-    download_apod_images(json_nasa_apod, images_path=args.images_path)
+    nasa_apod = fetch_nasa_apod_data(os.environ.get("NASA_API_KEY"), count=args.count, date=args.date)
+    download_apod_images(nasa_apod, images_path=args.images_path)
 
 
 if __name__ == "__main__":

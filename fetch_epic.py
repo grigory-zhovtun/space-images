@@ -57,8 +57,8 @@ def main():
     )
     args = parser.parse_args()
 
-    json_epic_data = fetch_epic(api_key)
-    download_epic(json_epic_data, images_path=args.images_path)
+    epic_data = fetch_epic(api_key)
+    download_epic(epic_data, images_path=args.images_path)
 
 
 if __name__ == "__main__":
