@@ -64,7 +64,7 @@ def main():
     args = parser.parse_args()
     bot = Bot(api_key)
 
-    channel_id = args.chat_id if args.chat_id else os.environ['CHANNEL_ID']
+    channel_id = args.chat_id if args.chat_id else os.environ['TELEGRAM_CHANNEL_ID']
 
     if args.image:
         if not os.path.exists(args.image):

@@ -65,7 +65,7 @@ This Python project fetches and manages images from SpaceX, NASA APOD, and NASA 
 
 The application uses the following environment variables:
 
-•	**CHANNEL_ID**: Telegram channel ID where images will be sent.
+•	**TELEGRAM_CHANNEL_ID**: Telegram channel ID where images will be sent.
 
 •	**NASA_API_KEY**: Your API key for accessing NASA’s APOD (and EPIC) endpoints.
 
