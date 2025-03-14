@@ -31,7 +31,6 @@ def download_spacex_image(data, images_path):
         return
     for image in images:
         download_image(image, images_path)
-    print("Done!")
 
 
 def main():
