@@ -23,7 +23,7 @@ def fetch_epic(api_key: str):
 
 
 
-def download_epic(data: list, images_path):
+def download_epic(api_key, data: list, images_path):
     """Download NASA EPIC images.
 
     Args:
@@ -34,8 +34,8 @@ def download_epic(data: list, images_path):
         date_str = datetime.fromisoformat(item["date"].split()[0])
         year, month, day = date_str.year, date_str.month, date_str.day
         image_url = (
-            f"https://epic.gsfc.nasa.gov/archive/natural/"
-            f"{year}/{month}/{day}/jpg/{image_name}.jpg"
+            f"https://api.nasa.gov/EPIC/archive/natural/"
+            f"{year}/{month:02d}/{day:02d}/png/{image_name}.png?api_key={api_key}"
         )
         download_image(image_url, images_path)
 
@@ -58,7 +58,7 @@ def main():
     args = parser.parse_args()
 
     epic_data = fetch_epic(api_key)
-    download_epic(epic_data, images_path=args.images_path)
+    download_epic(api_key, epic_data, images_path=args.images_path)
 
 
 if __name__ == "__main__":
