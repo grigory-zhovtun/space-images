@@ -68,6 +68,11 @@ def download_apod_images(data, images_path="images/nasa_apod"):
 def main():
     """Parse command-line arguments and download NASA APOD images."""
     load_dotenv()
+
+    api_key = os.environ.get("NASA_API_KEY")
+    if not api_key:
+        raise ValueError("NASA_API_KEY must be provided in the environment variables.")
+
     parser = argparse.ArgumentParser(
         description="Download NASA Astronomy Picture of the Day images."
     )
@@ -90,7 +95,7 @@ def main():
     )
     args = parser.parse_args()
 
-    nasa_apod = fetch_nasa_apod_data(os.environ.get("NASA_API_KEY"), count=args.count, date=args.date)
+    nasa_apod = fetch_nasa_apod_data(api_key, count=args.count, date=args.date)
     download_apod_images(nasa_apod, images_path=args.images_path)
 
 
