@@ -42,28 +42,12 @@ This Python project fetches and manages images from SpaceX, NASA APOD, and NASA 
 
 4. **Configure environment variables:** Create a `.env` file in the project root directory and define the required variables.
 
-   **Required Environment Variables**
-
-   - **NASA\_API\_KEY**\
-     *Type:* String\
-     *Description:* API key for accessing NASA's APOD and EPIC data.\
-     *Example:*
-
-     ```env
-     NASA_API_KEY=your_nasa_api_key_here
-     ```
-
-   - **TELEGRAM\_API\_KEY**\
-     *Type:* String\
-     *Description:* API key for the Telegram bot to post images in a channel.\
-     *Example:*
-
-     ```env
-     TELEGRAM_API_KEY=your_telegram_bot_api_key_here
-     ```
+   
 ## Environment Variables Setup
 
 The application uses the following environment variables:
+
+•	**TELEGRAM_API_KEY**: API key for the Telegram bot to post images in a channel.
 
 •	**TELEGRAM_CHANNEL_ID**: Telegram channel ID where images will be sent.
 
