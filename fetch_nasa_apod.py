@@ -18,8 +18,6 @@ def fetch_nasa_apod_data(api_key, count=30, date=None):
     Returns:
         json: json object containing NASA APOD data
     """
-    if not api_key:
-        raise ValueError("NASA_API_KEY not found in environment variables.")
     apod_url = "https://api.nasa.gov/planetary/apod"
     payload = {"api_key": api_key}
     if date:
