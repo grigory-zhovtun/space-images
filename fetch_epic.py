@@ -33,11 +33,16 @@ def download_epic(api_key, data: list, images_path):
         image_name = item["image"]
         date_str = datetime.fromisoformat(item["date"].split()[0])
         year, month, day = date_str.year, date_str.month, date_str.day
+
+        payload = {
+            "api_key": api_key,
+        }
+
         image_url = (
             f"https://api.nasa.gov/EPIC/archive/natural/"
-            f"{year}/{month:02d}/{day:02d}/png/{image_name}.png?api_key={api_key}"
+            f"{year}/{month:02d}/{day:02d}/png/{image_name}.png"
         )
-        download_image(image_url, images_path)
+        download_image(image_url, images_path, params=payload)
 
 
 def main():

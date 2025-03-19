@@ -16,15 +16,16 @@ def get_file_extension(image_url):
     return extension
 
 
-def download_image(image_url, path_to_save):
+def download_image(image_url, path_to_save, params=None):
     """Download an image from URL and save it to the specified path.
 
     Args:
         image_url (str): URL to download the image from.
         path_to_save (str): Path where the image will be saved.
+        params (dict): Optional parameters to pass to the request.
     """
     Path(path_to_save).mkdir(parents=True, exist_ok=True)
-    response = requests.get(image_url)
+    response = requests.get(image_url, params=params)
     response.raise_for_status()
     filename = get_filename_from_url(image_url)
     filepath = Path(path_to_save) / filename
